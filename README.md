@@ -1,41 +1,39 @@
 # Deep Clean Pro
 
-Deep Clean Pro 是一款专为 Mac 设计的深度清理缓的工具，释放磁盘空间，让设备恢复流畅。
+Deep Clean Pro is a deep-cleaning tool designed specifically for Mac; it frees up disk space and restores your device's smooth performance.
 
 ---
 
-## 软件界面预览
+## Software Interface Preview
 
-* **智能仪表盘**：直观展示各类垃圾文件的大小，支持一键切换扫描与清理模式。
-* **白名单管理**：允许用户自由控制忽略名单，手动添加或删除受保护的隐私与高频路径。
-* **分类明细视窗**：提供底层文件路径查看与定位功能，让每一次清理都透明、可控。
+* **Smart Dashboard**: Intuitively displays the size of various junk files and supports one-click switching between scanning and cleaning modes.
+* **Whitelist Management**: Allows users to control the ignore list, manually adding or removing protected private data and frequently used file paths.
+* **Categorized Detail View**: Provides file path viewing and location capabilities, ensuring every cleaning action is transparent and controllable.
 
 ![](https://raz1ner.com/Awesome-Software/Deep-Clean-Pro/image.png)
 
 ---
 
-## 核心功能与特点
+## Core Features
 
-* **全盘深度扫描**
-  一键分析系统缓存、用户日志、浏览器数据、开发环境残留以及下载目录，精准识别可安全释放的冗余空间。
-* **按分类精细管理**
-  扫描结果按类别清晰呈现，用户既可以在仪表板一键全选清理，也可以进入分类详情中逐个勾选特定文件。
-* **原生安全保护**
-  内置白名单保护机制，自动过滤关键系统配置和本地认证凭据，支持用户手动将重要目录或文件加入白名单，防止误删。
-* **原生权限托管**
-  支持系统级安全验证，高级清理指令通过 macOS 系统钥匙串（Keychain）安全托管，保障扫描与清理过程的权限合规性。
-* **系统级深度优化**
-  除了常规文件删除，应用还提供刷新 DNS 缓存、释放不必要内存、重建快速预览缩略图以及优化邮件数据库等深层性能维护。
+* **Full-Disk Deep Scan**
+Analyze system caches, user logs, browser data, development environment residues, and download directories with a single click, accurately identifying redundant space that can be safely reclaimed.
+* **Granular Category Management**
+Scan results are clearly categorized; users can choose to clean everything at once via the dashboard or drill down into categories to select specific files individually.
+* **Native Security Protection**
+Features a built-in whitelist mechanism that automatically filters out critical system configurations and local authentication credentials; users can manually whitelist important directories or files to prevent accidental deletion.
+* **Native Permission Handling**
+Supports system-level security verification; advanced cleaning commands are securely managed via the macOS Keychain, ensuring permission compliance during the scanning and cleaning processes.
+* **System-Level Deep Optimization**
+Beyond standard file deletion, the app offers deep performance maintenance, such as flushing DNS caches, freeing up unnecessary memory, rebuilding Quick Look thumbnails, and optimizing mail databases.
 
 ---
 
-## 使用指南
+## User Guide
 
-### 1 基础准备
-由于 macOS 系统的安全机制，首次打开应用时需要根据提示授予「完全磁盘访问」权限，以便软件能够完整扫描冗余垃圾。
+### 1 Initial Setup
+Due to macOS security mechanisms, you must grant "Full Disk Access" when launching the app for the first time (following the on-screen prompts) to allow the software to fully scan for redundant junk files.
 
-### 2 一键扫描
-点击主界面的「深度扫描」按钮，根据提示输入开机密码以启动高权限的安全检索。扫描过程中进度条会实时展示处理进度。
-
-### 3 筛选与清理
-在仪表板中确认各分类体积，或者切换到左侧的特定分类勾选文件。确认无误后点击顶部的「清理垃圾」即可完成释放。
+### 2 One-Click Scan
+Click the "Deep Scan" button on the main interface and enter your system login password when prompted to initiate a high-privilege, secure scan. A progress bar will display the processing status in real-time. ### 3 Filtering and Cleanup
+Check the volume of each category on the dashboard, or switch to a specific category on the left to select files. Once you have verified the selection, click "Clean Up Junk" at the top to free up space.
