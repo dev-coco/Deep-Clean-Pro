@@ -54,11 +54,16 @@ const categories = {
     '~/Library/Group\\ Containers/*.ru.keepcoder.Telegram/stable/account-*/postbox/media ',
     '~/Library/Containers/com.bitdefender.BitdefenderVirusScanner/Data/Library/Application\\ Support/Bitdefender\\ Virus\\ Scanner/antivirus.bundle',
     '~/Library/Containers/com.bitdefender.BitdefenderVirusScanner/Data/Library/Caches/com.bitdefender.BitdefenderVirusScanner',
-    '~/Library/Saved Application\\ State'
+    '~/Library/Saved Application\\ State',
+    '~/Documents/League\\ of\\ Legends'
   ],
   系统缓存: [
     '~/Library/Caches',
+    '/Library/Developer/CoreSimulator/Caches/*',
     '/Library/Caches/Desktop\\ Pictures/*/*',
+    '/Library/Caches/com.microsoft.autoupdate',
+    '/Library/Application\\ Support/Logi/LogiOptionsPlus/cache',
+    '/private/tmp/gzexe*',
     '/private/var/folders/*/*/*/*/*.exe',
     '/private/var/folders/*/*/*/clang/ModuleCache',
     '/private/var/folders/*/*/*/com.google.Chrome.helper',
@@ -70,7 +75,6 @@ const categories = {
     '/private/var/folders/*/*/*/com.apple.Safari.SafeBrowsing',
     '/private/var/folders/*/*/*/com.apple.DeveloperTools',
     '/private/var/folders/*/*/*/com.apple.FinalCut',
-    '/private/var/folders/*/*/*/com.apple.FontRegistry',
     '/private/var/folders/*/*/*/com.apple.avconferenced',
     '/private/var/folders/*/*/*/com.apple.QuickTimePlayerX',
     '/private/var/folders/*/*/*/com.apple.mediaanalysisd',
@@ -101,9 +105,6 @@ const categories = {
     '/private/var/folders/*/*/*/com.apple.Chess',
     '/private/var/folders/*/*/*/com.apple.freeform',
     '/private/var/tmp/com.apple.messages',
-    '/private/tmp/gzexe*',
-    '/Library/Caches/com.microsoft.autoupdate',
-    '/Library/Application\\ Support/Logi/LogiOptionsPlus/cache',
     '/private/var/folders/*/*/*/*.tmp'
   ],
   浏览器: [
@@ -915,7 +916,35 @@ const categories = {
     // Cargo
     '~/.cargo',
     // Swift
-    '~/.swiftpm'
+    '~/.swiftpm',
+    // CodeX
+    '~/Library/Application\\ Support/Codex/GraphiteDawnCache',
+    '~/Library/Application\\ Support/Codex/*/DawnGraphiteCache',
+    '~/Library/Application\\ Support/Codex/*/GraphiteDawnCache',
+    '~/Library/Application\\ Support/Codex/*/DawnWebGPUCache',
+    '~/Library/Application\\ Support/Codex/*/GPUCache',
+    '~/Library/Application\\ Support/Codex/*/Storage/ext/*/def/GPUCache',
+    '~/Library/Application\\ Support/Codex/*/*-journal',
+    '~/Library/Application\\ Support/Codex/*/databases/*-journal',
+    '~/Library/Application\\ Support/Codex/*/Visited\\ Links',
+    '~/Library/Application\\ Support/Codex/*/Top\\ Sites',
+    '~/Library/Application\\ Support/Codex/*/History\\ Provider\\ Cache',
+    '~/Library/Application\\ Support/Codex/*/Current\\ Tabs',
+    '~/Library/Application\\ Support/Codex/*/Network\\ Action\\ Predictor',
+    '~/Library/Application\\ Support/Codex/*/*.ldb',
+    '~/Library/Application\\ Support/Codex/*/*.log',
+    '~/Library/Application\\ Support/Codex/*/Extension\\ State',
+    '~/Library/Application\\ Support/Codex/*/Session\\ Storage',
+    '~/Library/Application\\ Support/Codex/*/Current\\ Session',
+    '~/Library/Application\\ Support/Codex/*/Storage/ext',
+    '~/Library/Application\\ Support/Codex/*/*/Cache',
+    '~/Library/Application\\ Support/Codex/*/GrShaderCache',
+    '~/Library/Application\\ Support/Codex/*/Service\\ Worker/CacheStorage',
+    '~/Library/Application\\ Support/Codex/*/shared_proto_db',
+    '~/Library/Application\\ Support/Codex/*/Service\\ Worker',
+    '~/Library/Application\\ Support/Codex/ShaderCache',
+    '~/Library/Application\\ Support/Codex/component_crx_cache',
+    '~/Library/Application\\ Support/Codex/extensions_crx_cache'
   ],
   用户日志: ['~/Library/Logs', '~/Library/Application\\ Support/*/logs', '~/Library/Application\\ Support/*/Code\\ Cache', '~/Library/Application\\ Support/CrashReporter'],
   系统日志: ['/Library/Logs/*.log', '/Library/Logs/*/*.log', '/Library/Logs/DiagnosticReports', '/private/var/db/DiagnosticPipeline', '/private/var/db/diagnostics/*/*', '/private/var/log'],
@@ -940,6 +969,94 @@ const optimizeItems = [
   { label: '修复 iCloud 同步异常', cmd: 'killall bird', checked: true },
   { label: '修复 Spotlight 崩溃问题', cmd: 'killall Spotlight', checked: true },
   { label: '修复通知中心组件异常', cmd: 'killall NotificationCenter', checked: true }
+]
+
+// 浏览器存放版本目录配置表
+const browserVersionDirs = [
+  {
+    appName: 'Google Chrome',
+    versionsDir: '/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions'
+  },
+  {
+    appName: 'Google Chrome Canary',
+    versionsDir: '/Applications/Google Chrome Canary.app/Contents/Frameworks/Google Chrome Framework.framework/Versions'
+  },
+  {
+    appName: 'Chromium',
+    versionsDir: '/Applications/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions'
+  },
+  {
+    appName: 'Thorium',
+    versionsDir: '/Applications/Thorium.app/Contents/Frameworks/Thorium Framework.framework/Versions'
+  },
+  {
+    appName: 'Brave Browser',
+    versionsDir: '/Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions'
+  },
+  {
+    appName: 'Microsoft Edge',
+    versionsDir: '/Applications/Microsoft Edge.app/Contents/Frameworks/Microsoft Edge Framework.framework/Versions'
+  },
+  {
+    appName: 'Ecosia Browser',
+    versionDirs: '/Applications/Ecosia Browser.app/Contents/Frameworks/Ecosia Browser Framework.framework/Versions'
+  },
+  {
+    appName: 'Yandex',
+    versionDirs: '/Applications/Yandex.app/Contents/Frameworks/Yandex Framework.framework/Versions'
+  },
+  {
+    appName: 'Vivaldi',
+    versionDirs: '/Applications/Vivaldi.app/Contents/Frameworks/Vivaldi Framework.framework/Versions'
+  },
+  {
+    appName: 'Tabbit',
+    versionDirs: '/Applications/Tabbit.app/Contents/Frameworks/Tabbit Browser Framework.framework/Versions'
+  },
+  {
+    appName: 'Opera',
+    versionDirs: '/Applications/Opera.app/Contents/Frameworks/Opera Framework.framework/Versions'
+  },
+  {
+    appName: 'Opera GX',
+    versionDirs: '/Applications/Opera GX.app/Contents/Frameworks/Opera Framework.framework/Versions'
+  },
+  {
+    appName: 'Helium',
+    versionDirs: '/Applications/Helium.app/Contents/Frameworks/Helium Framework.framework/Versions'
+  },
+  {
+    appName: 'Ulaa',
+    versionDirs: '/Applications/Ulaa.app/Contents/Frameworks/Ulaa Framework.framework/Versions'
+  },
+  {
+    appName: 'Avast Secure Browser',
+    versionDirs: '/Applications/Avast Secure Browser.app/Contents/Frameworks/Avast Secure Browser Framework.framework/Versions'
+  },
+  {
+    appName: '360 极速浏览器',
+    versionDirs: '/Applications/360Chrome.app/Contents/Frameworks/360Chrome Framework.framework/Versions'
+  },
+  {
+    appName: 'QQ 浏览器',
+    versionDirs: '/Applications/QQBrowser.app/Contents/Frameworks/QQBrowser Framework.framework/Versions'
+  },
+  {
+    appName: 'UC 浏览器',
+    versionDirs: '/Applications/UC.app/Contents/Frameworks/UC Framework.framework/Versions'
+  },
+  {
+    appName: '115 浏览器',
+    versionDirs: '/Applications/115Browser.app/Contents/Frameworks/115Browser Framework.framework/Versions'
+  },
+  {
+    appName: '夸克浏览器',
+    versionDirs: '/Applications/Quark.app/Contents/Frameworks/Quark Framework.framework/Versions'
+  },
+  {
+    appName: '遨游浏览器',
+    versionDirs: '/Applications/Maxthon.app/Contents/Frameworks/Maxthon Framework.framework/Versions'
+  }
 ]
 
 // 初始化
@@ -1182,6 +1299,7 @@ async function startScanProcess () {
     })
   )
 
+  await scanBroswerOldVersions(results)
   // 将结果数组转回对象结构
   scanData = Object.fromEntries(results)
 
@@ -1527,6 +1645,115 @@ function formatSize (kb) {
   if (kb < 1024) return kb + ' KB'
   if (kb < 1024 * 1024) return (kb / 1024).toFixed(2) + ' MB'
   return (kb / (1024 * 1024)).toFixed(2) + ' GB'
+}
+
+/**
+ * @description 比较两个版本号的大小，按各级版本号依次进行数值比较
+ * @param {string} a - 第一个版本号
+ * @param {string} b - 第二个版本号
+ * @returns {number} a 大于 b 返回 1，小于返回 -1，相等返回 0
+ */
+function compareVersion (a, b) {
+  const aParts = String(a)
+    .split('.')
+    .map(n => parseInt(n, 10) || 0)
+  const bParts = String(b)
+    .split('.')
+    .map(n => parseInt(n, 10) || 0)
+  const len = Math.max(aParts.length, bParts.length)
+
+  for (let i = 0; i < len; i++) {
+    const av = aParts[i] || 0
+    const bv = bParts[i] || 0
+    if (av > bv) return 1
+    if (av < bv) return -1
+  }
+
+  return 0
+}
+
+/**
+ * @description 扫描浏览器 Framework 的历史版本目录
+ * @param {Array} results - 扫描结果列表，包含各分类及对应的清理项目
+ * @returns {Promise<void>}
+ */
+async function scanBroswerOldVersions (results) {
+  try {
+    // 找到浏览器分类，用于存放扫描结果
+    const browserEntry = results.find(([category]) => category === '浏览器')
+
+    // 获取原始数据
+    const browserItems = browserEntry[1]
+
+    for (const browser of browserVersionDirs) {
+      const { appName, versionsDir } = browser
+
+      // 遍历 versionsDir 下的每一项，只保留目，并输出其 basename
+      const listCmd = `sh -c 'for f in "${versionsDir}"/*; do [ -d "$f" ] && basename "$f"; done'`
+      // 以 root 权限执行该命令，获取目录列表
+      const listResult = await execRoot(listCmd)
+      // 没有结果就跳过此浏览器
+      if (!listResult.stdout) continue
+
+      const versionDirs = listResult.stdout
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean)
+        .filter(name => name !== 'Current' && /^\d+(\.\d+)+$/.test(name))
+
+      // 没有旧版本残留
+      if (versionDirs.length <= 1) continue
+
+      // 取出最新版本
+      const latest = [...versionDirs].sort(compareVersion).pop()
+
+      // 遍历所有版本目录
+      for (const version of versionDirs) {
+        // 跳过最新版本
+        if (version === latest) continue
+
+        // 旧版本目录的完整路径
+        const fullPath = `${versionsDir}/${version}`
+
+        // 计算占用的磁盘空间
+        const sizeResult = await execRoot(`du -sk "${fullPath}" 2>/dev/null`)
+        if (!sizeResult.stdout) continue
+
+        // du 的输出格式类似 "12345\t/path/to/dir"
+        // 取第一行非空内容
+        const line = sizeResult.stdout.split('\n').find(Boolean)
+        if (!line) continue
+
+        // 找到数字和路径之间的 tab 分隔符位置
+        const tabIndex = line.indexOf('\t')
+        if (tabIndex === -1) continue
+
+        // 取 tab 前面的部分作为 KB 大小，转成整数
+        const kb = parseInt(line.slice(0, tabIndex)) || 0
+        if (kb === 0) continue
+
+        // 检查该路径是否在用户白名单中
+        const isWhitelisted = userWhiteList.some(wlPath => {
+          const normalizedWl = wlPath.replace('~', '/Users/' + fullPath.split('/')[2])
+          // 完全匹配，或者 fullPath 是白名单路径的子目录，都视为白名单命中
+          return fullPath === normalizedWl || fullPath.startsWith(normalizedWl + '/')
+        })
+
+        // 白名单中的路径不加入清理列表
+        if (isWhitelisted) continue
+
+        // 将该旧版本信息加入浏览器分类的条目列表
+        browserItems.push({
+          path: fullPath,
+          name: `${appName} old version ${version}`,
+          kb,
+          checked: true
+        })
+      }
+    }
+  } catch (error) {
+    console.error('scan browser old version failed:', error)
+  }
 }
 
 // 渲染优化系统界面
