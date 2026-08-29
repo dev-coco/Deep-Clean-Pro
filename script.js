@@ -30,6 +30,7 @@ const categories = {
     '~/Library/Containers/*/Data/Library/Caches',
     '~/Library/Containers/*/Data/tmp',
     '~/Movies/*.fcpbundle/*/Render\\ Files/*',
+    '~/Movies/*.fcpbundle/__Trash/*',
     '~/Movies/Final\\ Cut\\ Backups.localized',
     '~/Movies/JianyingPro/User\\ Data/Cache',
     '~/Library/HTTPStorages/*',
@@ -71,6 +72,8 @@ const categories = {
     '/private/var/folders/*/*/*/*/com.apple.metal',
     '/private/var/folders/*/*/*/com.apple.metal',
     '/private/var/folders/*/*/*/*/com.apple.metalfe',
+    '/private/var/folders/*/*/*/*/com.apple.metalfe',
+    '/private/var/folders/*/*/*/com.apple.GenerativePlaygroundApp',
     '/private/var/folders/*/*/*/*/com.apple.gpuarchiver',
     '/private/var/folders/*/*/*/com.apple.Safari.SafeBrowsing',
     '/private/var/folders/*/*/*/com.apple.DeveloperTools',
@@ -917,6 +920,10 @@ const categories = {
     '~/.cargo',
     // Swift
     '~/.swiftpm',
+    // UV
+    '~/.cache/uv',
+    // PyInstaller
+    '~/Library/Application\\ Support/pyinstaller/*',
     // CodeX
     '~/Library/Application\\ Support/Codex/GraphiteDawnCache',
     '~/Library/Application\\ Support/Codex/*/DawnGraphiteCache',
