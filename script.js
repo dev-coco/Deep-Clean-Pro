@@ -25,12 +25,6 @@ const defaultWhitelist = [
 
 // 清理目录配置表
 const categories = {
-  测试: [
-    //
-    // '~/Movies/*.fcpbundle/*/Render\\ Files/*',
-    // '~/Movies/*.fcpbundle/__Trash/*',
-    // '/Volumes/**/*.fcpbundle'
-  ],
   用户缓存: [
     '~/Library/iTunes/iPhone\\ Software\\ Updates',
     '~/Library/Containers/*/Data/Library/Caches',
