@@ -25,12 +25,18 @@ const defaultWhitelist = [
 
 // 清理目录配置表
 const categories = {
+  测试: [
+    //
+    // '~/Movies/*.fcpbundle/*/Render\\ Files/*',
+    // '~/Movies/*.fcpbundle/__Trash/*',
+    // '/Volumes/**/*.fcpbundle'
+  ],
   用户缓存: [
     '~/Library/iTunes/iPhone\\ Software\\ Updates',
     '~/Library/Containers/*/Data/Library/Caches',
     '~/Library/Containers/*/Data/tmp',
-    '~/Movies/*.fcpbundle/*/Render\\ Files/*',
-    '~/Movies/*.fcpbundle/__Trash/*',
+    // '~/Movies/*.fcpbundle/*/Render\\ Files/*',
+    // '~/Movies/*.fcpbundle/__Trash/*',
     '~/Movies/Final\\ Cut\\ Backups.localized',
     '~/Movies/JianyingPro/User\\ Data/Cache',
     '~/Library/HTTPStorages/*',
@@ -966,16 +972,17 @@ const optimizeItems = [
   { label: '重建快速预览缓存', cmd: 'qlmanage -r', checked: true },
   { label: '重建快速预览缩略图', cmd: 'qlmanage -r cache', checked: true },
   { label: '优化邮件索引数据库', cmd: 'sqlite3 ~/Library/Mail/V10/MailData/Envelope\\ Index "VACUUM;"', checked: true },
+  { label: '优化音乐索引数据库', cmd: 'sqlite3 /Users/leo/Music/Audio\\ Music\\ Apps/Databases/ContentDatabaseV01.db/index.db "VACUUM;" && sqlite3 /Users/leo/Music/Audio\\ Music\\ Apps/Databases/ContentDatabaseV01.db/index.db-fts "VACUUM;"', checked: true },
   { label: '清理下载历史记录', cmd: "sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'", checked: true },
-  { label: '清理图标缓存', cmd: 'find /private/var/folders/ \\( -name com.apple.dock.iconcache -or -name com.apple.iconservices \\) -exec rm -rfv {} \\;', checked: true },
-  { label: '清理 icon 服务文件', cmd: 'rm -rf /Library/Caches/com.apple.iconservices.store;', checked: true },
-  { label: '修复 Dock 异常', cmd: 'killall Dock', checked: true },
-  { label: '修复输入法异常', cmd: 'killall TextInputMenuAgent', checked: true },
-  { label: '修复输入法切换异常', cmd: 'killall TextInputSwitcher', checked: true },
-  { label: '修复共享异常', cmd: 'killall sharingd', checked: true },
-  { label: '修复 iCloud 同步异常', cmd: 'killall bird', checked: true },
-  { label: '修复 Spotlight 崩溃问题', cmd: 'killall Spotlight', checked: true },
-  { label: '修复通知中心组件异常', cmd: 'killall NotificationCenter', checked: true }
+  { label: '清理图标缓存', cmd: 'find /private/var/folders/ \\( -name com.apple.dock.iconcache -or -name com.apple.iconservices \\) -exec rm -rfv {} \\;', checked: false },
+  { label: '清理 icon 服务文件', cmd: 'rm -rf /Library/Caches/com.apple.iconservices.store;', checked: false },
+  { label: '修复 Dock 异常', cmd: 'killall Dock', checked: false },
+  { label: '修复输入法异常', cmd: 'killall TextInputMenuAgent', checked: false },
+  { label: '修复输入法切换异常', cmd: 'killall TextInputSwitcher', checked: false },
+  { label: '修复共享异常', cmd: 'killall sharingd', checked: false },
+  { label: '修复 iCloud 同步异常', cmd: 'killall bird', checked: false },
+  { label: '修复 Spotlight 崩溃问题', cmd: 'killall Spotlight', checked: false },
+  { label: '修复通知中心组件异常', cmd: 'killall NotificationCenter', checked: false }
 ]
 
 // 浏览器存放版本目录配置表
@@ -1065,6 +1072,113 @@ const browserVersionDirs = [
     versionDirs: '/Applications/Maxthon.app/Contents/Frameworks/Maxthon Framework.framework/Versions'
   }
 ]
+
+// Shell 参数安全转义工具函数（防止空格、单双引号、括号、$ 等字符引发语法错误或注入）
+function escapeShellArg (arg) {
+  return `'${String(arg).replace(/'/g, `'\\''`)}'`
+}
+
+// 扫描 Final Cut Pro 缓存
+async function scanFinalCutProCache () {
+  let userHome = ''
+  try {
+    const homeRes = await window.electronAPI.runShell('echo "$HOME"')
+    userHome = homeRes.stdout ? homeRes.stdout.trim() : ''
+  } catch {
+    userHome = ''
+  }
+
+  // 默认从用户目录开始扫描
+  const roots = userHome ? [userHome] : ['$HOME']
+  // 当前挂载的所有卷
+  const volResult = await execRoot(`sh -c 'for f in /Volumes/*; do [ -d "$f" ] && [ ! -L "$f" ] && basename "$f"; done'`)
+
+  if (volResult.stdout) {
+    volResult.stdout
+      .split('\n')
+      .map(line => line.trim().normalize('NFC'))
+      .filter(Boolean)
+      .forEach(vol => roots.push(`/Volumes/${vol}`))
+  }
+
+  // 扫描单个根目录
+  const scanRoot = async root => {
+    // 保存找到缓存项目
+    const items = []
+
+    const findBundleCmd = `env LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 find ${escapeShellArg(root)} -xdev -type d -iname "*.fcpbundle" 2>/dev/null`
+    const bundleResult = await execRoot(findBundleCmd)
+    if (!bundleResult.stdout) return items
+
+    const bundlePaths = bundleResult.stdout
+      .split('\n')
+      .map(l => l.trim().normalize('NFC'))
+      .filter(Boolean)
+
+    // 当前目录没有 Final Cut Pro 缓存
+    if (bundlePaths.length === 0) return items
+
+    // 每一行转换成独立字符串
+    const lines = []
+
+    // 把 fcpbundle 路径转换成 shell 参数
+    const batchSize = 30
+    for (let i = 0; i < bundlePaths.length; i += batchSize) {
+      const batch = bundlePaths.slice(i, i + batchSize)
+      const quotedBundles = batch.map(escapeShellArg).join(' ')
+      const findSubCmd = `env LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 find ${quotedBundles} -type d \\( -iname "Render Files" -o -iname "__Trash" \\) -exec du -sk {} + 2>/dev/null`
+      const subResult = await execRoot(findSubCmd)
+      if (subResult.stdout) {
+        subResult.stdout
+          .split('\n')
+          .map(l => l.trim().normalize('NFC'))
+          .filter(Boolean)
+          .forEach(l => lines.push(l))
+      }
+    }
+
+    // 遍历每一个缓存目录
+    for (const line of lines) {
+      const tabIndex = line.indexOf('\t')
+      if (tabIndex === -1) continue
+
+      // 获取目录大小，单位 KB
+      const kb = parseInt(line.slice(0, tabIndex), 10) || 0
+      // 获取目录完整路径
+      const dirPath = line.slice(tabIndex + 1).trim().normalize('NFC')
+      if (kb === 0 || !dirPath) continue
+
+      if (/__Trash$/i.test(dirPath)) {
+        const parentBundle = bundlePaths.find(bp => dirPath === `${bp}/__Trash`)
+        if (!parentBundle) continue
+      }
+
+      // 检查当前路径是否在白名单中
+      const isWhitelisted = userWhiteList.some(wlPath => {
+        const normalizedWl = (userHome ? wlPath.replace(/^~/, userHome) : wlPath).normalize('NFC')
+        return dirPath === normalizedWl || dirPath.startsWith(normalizedWl + '/')
+      })
+      if (isWhitelisted) continue
+
+      const bundleMatch = dirPath.match(/([^/]+\.fcpbundle)/i)
+      const bundleName = bundleMatch ? bundleMatch[1] : dirPath.split('/').pop()
+      const label = /__Trash$/i.test(dirPath) ? '__Trash' : 'Render Files'
+
+      // 记录扫描结果
+      items.push({
+        path: dirPath,
+        name: `${bundleName} - ${label}`,
+        kb,
+        checked: true
+      })
+    }
+
+    return items
+  }
+
+  const results = await Promise.all(roots.map(scanRoot))
+  return results.flat()
+}
 
 // 初始化
 async function initApp () {
@@ -1203,6 +1317,7 @@ async function startScanProcess () {
   scanData = {}
 
   const categoryEntries = Object.entries(categories)
+  const total = categoryEntries.length + 1
 
   // 已完成的分类数量
   let completedCategories = 0
@@ -1217,12 +1332,9 @@ async function startScanProcess () {
       if (paths.length === 0) {
         completedCategories++
         // 更新进度条
-        pFill.style.width = `${Math.round((completedCategories / categoryEntries.length) * 100)}%`
+        pFill.style.width = `${Math.round((completedCategories / total) * 100)}%`
         return [category, items]
       }
-
-      // 将 ~ 替换为 $HOME，让 shell 正确解析用户目录
-      const joinedPaths = paths.map(p => p.replace('~', '$HOME')).join(' ')
 
       // 遍历目录
       // 找出哪些路径是白名单条目的父目录，需要展开扫描
@@ -1238,8 +1350,6 @@ async function startScanProcess () {
 
       // 遍历目录
       const cmd = `sh -c 'for f in ${expandedPaths.replace(/~/g, '$HOME')}; do [ -e "$f" ] && du -sk "$f" 2>/dev/null; done'`
-
-      // const cmd = `sh -c 'for f in ${joinedPaths}; do [ -e "$f" ] && du -sk "$f" 2>/dev/null; done'`
 
       // 执行命令，需要 root 权限
       const result = await execRoot(cmd)
@@ -1295,10 +1405,10 @@ async function startScanProcess () {
       completedCategories++
 
       // 更新进度条
-      pFill.style.width = `${Math.round((completedCategories / categoryEntries.length) * 100)}%`
+      pFill.style.width = `${Math.round((completedCategories / total) * 100)}%`
 
       // 更新 UI 文本
-      status.innerText = `扫描完成: ${completedCategories}/${categoryEntries.length} 个类别`
+      status.innerText = `扫描完成: ${completedCategories}/${total} 个类别`
       detail.innerText = `已完成: ${category}（${items.length} 个项目）`
 
       // 返回分类结果
@@ -1306,7 +1416,19 @@ async function startScanProcess () {
     })
   )
 
+  detail.innerText = '正在扫描其它缓存'
+
+  // 旧版浏览器缓存
   await scanBroswerOldVersions(results)
+
+  // Final Cut Pro 缓存
+  const fcpItems = await scanFinalCutProCache()
+  const userCacheEntry = results.find(([category]) => category === '用户缓存')
+  if (userCacheEntry) {
+    userCacheEntry[1].push(...fcpItems)
+  }
+
+  completedCategories++
   // 将结果数组转回对象结构
   scanData = Object.fromEntries(results)
 

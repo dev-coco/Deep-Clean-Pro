@@ -57,7 +57,10 @@ ipcMain.handle('run-shell', async (event, cmd) => {
   return new Promise(resolve => {
     // maxBuffer 设置为 30MB
     // 避免输出过大导致缓冲区溢出
-    exec(cmd, { maxBuffer: 1024 * 1024 * 30 }, (error, stdout, stderr) => {
+    exec(cmd, {
+      maxBuffer: 1024 * 1024 * 30,
+      env: { ...process.env, LANG: 'en_US.UTF-8', LC_ALL: 'en_US.UTF-8' }
+    }, (error, stdout, stderr) => {
       resolve({
         success: !error,
         stdout: stdout || '',
